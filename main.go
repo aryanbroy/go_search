@@ -9,11 +9,6 @@ import (
 
 const addr = ":3000"
 
-type Document struct {
-	Id   int64  `json:"id"`
-	Text string `json:"text"`
-}
-
 func main() {
 	dirName := "/home/aryan/projects/search_engine/dataset/"
 
@@ -30,6 +25,7 @@ func main() {
 			Id:   docIndex,
 			Text: data,
 		}
+		newDoc.Text = newDoc.RemoveStopWords()
 
 		docs = append(docs, newDoc)
 	}
