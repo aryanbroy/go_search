@@ -1,14 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"io/fs"
 	"log"
 	"os"
 	"path/filepath"
 )
 
-func ReadFile(fileName string) {
+func ReadFile(fileName string) string {
 	log.Println("Reading file...")
 
 	data, err := os.ReadFile(fileName)
@@ -16,8 +15,7 @@ func ReadFile(fileName string) {
 		log.Fatalln("Error reading file: ", err)
 	}
 
-	fmt.Println("File size: ", len(data))
-	fmt.Println("File content: ", string(data))
+	return string(data)
 }
 
 func ListFiles(dir string) []string {
