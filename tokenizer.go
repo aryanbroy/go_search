@@ -7,14 +7,9 @@ import (
 	"github.com/bbalet/stopwords"
 )
 
-func ToLowerCase(text string) string {
-	lowerText := strings.ToLower(text)
-	return lowerText
-}
-
-func SplitWords(text string) []string {
-	s := strings.Fields(text)
-	return s
+func (doc Document) InvertedIndexing(token string, invertedIndexes map[string][]int64) {
+	log.Println("Token: ", token)
+	invertedIndexes[token] = append(invertedIndexes[token], doc.Id)
 }
 
 func (doc *Document) RemoveStopWords() string {
@@ -28,4 +23,14 @@ func Tokenize(text string) []string {
 	lowerCaseText := ToLowerCase(text)
 	splitWords := SplitWords(lowerCaseText)
 	return splitWords
+}
+
+func ToLowerCase(text string) string {
+	lowerText := strings.ToLower(text)
+	return lowerText
+}
+
+func SplitWords(text string) []string {
+	s := strings.Fields(text)
+	return s
 }

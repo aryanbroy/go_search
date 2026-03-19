@@ -38,8 +38,19 @@ func main() {
 	log.Println("Documents: ")
 	log.Println(string(docs_enc))
 
-	splitSlice := Tokenize(docs[0].Text)
-	log.Println("Slice: ", splitSlice)
+	invertedIndexes := make(map[string][]int64, 0)
+
+	for _, doc := range docs {
+		tokens := Tokenize(doc.Text)
+		for _, token := range tokens {
+			doc.InvertedIndexing(token, invertedIndexes)
+		}
+	}
+
+	log.Println("Indexes: ", invertedIndexes)
+
+	// splitSlice := Tokenize(docs[0].Text)
+	// log.Println("Slice: ", splitSlice)
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", Test)
