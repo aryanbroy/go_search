@@ -8,7 +8,7 @@ import (
 )
 
 func ReadFile(fileName string) string {
-	log.Println("Reading file...")
+	// log.Println("Reading file...")
 
 	data, err := os.ReadFile(fileName)
 	if err != nil {

@@ -30,15 +30,16 @@ func main() {
 		docs = append(docs, newDoc)
 	}
 
-	docs_enc, err := json.Marshal(docs)
+	// docs_enc, err := json.Marshal(docs)
+	_, err := json.Marshal(docs)
 	if err != nil {
 		log.Fatalln("Error marshaling json: ", err)
 	}
 
-	log.Println("Documents: ")
-	log.Println(string(docs_enc))
+	// log.Println("Documents: ")
+	// log.Println(string(docs_enc))
 
-	invertedIndexes := make(map[string][]int64, 0)
+	invertedIndexes := make(Index, 0)
 
 	for _, doc := range docs {
 		tokens := Tokenize(doc.Text)
@@ -47,14 +48,12 @@ func main() {
 		}
 	}
 
-	log.Println("Indexes: ", invertedIndexes)
-
-	// splitSlice := Tokenize(docs[0].Text)
-	// log.Println("Slice: ", splitSlice)
+	// log.Println("Indexes: ", invertedIndexes)
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", Test)
 	mux.HandleFunc("/fetch", CrawlWiki)
+	mux.HandleFunc("/search", invertedIndexes.SearchQuery)
 
 	server := http.Server{
 		Addr:    addr,

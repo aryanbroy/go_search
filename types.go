@@ -6,7 +6,3 @@ type Document struct {
 }
 
 type Index map[string][]int64
-
-type InvertedIndexes struct {
-	Indexes []Index
-}

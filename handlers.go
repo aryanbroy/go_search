@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strings"
 )
 
 func Test(w http.ResponseWriter, r *http.Request) {
@@ -25,4 +26,21 @@ func CrawlWiki(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Println(string(resData))
+}
+
+func (indexes Index) SearchQuery(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query().Get("q")
+	if len(query) <= 0 {
+		log.Println("No search query provided")
+		return
+	}
+	queries := strings.Split(query, " ")
+
+	for _, query := range queries {
+		// start from here later
+		// perform intersection of multiple slices
+	}
+
+	log.Println("search term: ", query)
+	log.Println("Index: ", indexes[query])
 }

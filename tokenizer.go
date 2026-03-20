@@ -1,21 +1,21 @@
 package main
 
 import (
-	"log"
+	// "log"
 	"strings"
 
 	"github.com/bbalet/stopwords"
 )
 
-func (doc Document) InvertedIndexing(token string, invertedIndexes map[string][]int64) {
-	log.Println("Token: ", token)
+func (doc Document) InvertedIndexing(token string, invertedIndexes Index) {
+	// log.Println("Token: ", token)
 	invertedIndexes[token] = append(invertedIndexes[token], doc.Id)
 }
 
 func (doc *Document) RemoveStopWords() string {
-	log.Printf("Removing stopwords from doc %v...", doc.Id)
+	// log.Printf("Removing stopwords from doc %v...", doc.Id)
 	cleanStr := stopwords.CleanString(doc.Text, "en", true)
-	log.Println("Stopwords removed")
+	// log.Println("Stopwords removed")
 	return cleanStr
 }
 
