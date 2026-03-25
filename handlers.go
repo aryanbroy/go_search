@@ -34,13 +34,45 @@ func (indexes Index) SearchQuery(w http.ResponseWriter, r *http.Request) {
 		log.Println("No search query provided")
 		return
 	}
+
 	queries := strings.Split(query, " ")
 
+	// index1 := indexes["zippy"]
+	// index2 := indexes["zvonko"]
+	//
+	// intersection := Intersection(index1, index2)
+
+	var intersection []int
+
 	for _, query := range queries {
-		// start from here later
-		// perform intersection of multiple slices
+		queryIndexes := indexes[query]
+		log.Printf("Indexes of %v:  %v", query, queryIndexes)
+		if len(intersection) == 0 {
+			intersection = append(intersection, queryIndexes...)
+		} else {
+			intersection = Intersection(intersection, queryIndexes)
+		}
 	}
 
 	log.Println("search term: ", query)
-	log.Println("Index: ", indexes[query])
+	log.Println("Intersection: ", intersection)
+
+	// log.Println("Index: ", indexes[query])
+}
+
+func Intersection(a, b []int) []int {
+	var i, j int
+	result := []int{}
+	for i < len(a) && j < len(b) {
+		if a[i] < b[j] {
+			i++
+		} else if a[i] > b[j] {
+			j++
+		} else {
+			result = append(result, a[i])
+			i++
+			j++
+		}
+	}
+	return result
 }

@@ -15,7 +15,7 @@ func main() {
 	// ReadFile("/home/aryan/projects/search_engine/dataset/alt.atheism/54485")
 	files := ListFiles(dirName)
 
-	var docIndex int64
+	var docIndex int
 	var docs []Document
 
 	for _, v := range files {

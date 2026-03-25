@@ -1,8 +1,8 @@
 package main
 
 type Document struct {
-	Id   int64  `json:"id"`
+	Id   int    `json:"id"`
 	Text string `json:"text"`
 }
 
-type Index map[string][]int64
+type Index map[string][]int
