@@ -6,6 +6,9 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
+
+	"github.com/hbollon/go-edlib"
 )
 
 func Test(w http.ResponseWriter, r *http.Request) {
@@ -28,7 +31,7 @@ func CrawlWiki(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(string(resData))
 }
 
-func (indexes Index) SearchQuery(w http.ResponseWriter, r *http.Request) {
+func (indexNKeys IndexWithKeys) SearchQuery(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query().Get("q")
 	if len(query) <= 0 {
 		log.Println("No search query provided")
@@ -44,9 +47,11 @@ func (indexes Index) SearchQuery(w http.ResponseWriter, r *http.Request) {
 
 	var intersection []int
 
+	startTime := time.Now()
+
 	for _, query := range queries {
-		queryIndexes := indexes[query]
-		log.Printf("Indexes of %v:  %v", query, queryIndexes)
+		queryIndexes := indexNKeys.indexes[query]
+		log.Printf("Number of Indexes found for %v:  %v", query, len(queryIndexes))
 		if len(intersection) == 0 {
 			intersection = append(intersection, queryIndexes...)
 		} else {
@@ -54,10 +59,28 @@ func (indexes Index) SearchQuery(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	log.Println("Time taken to search for the word: ", time.Since(startTime))
+
 	log.Println("search term: ", query)
 	log.Println("Intersection: ", intersection)
 
 	// log.Println("Index: ", indexes[query])
+}
+
+func (indexNKeys IndexWithKeys) SearchSingle(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query().Get("q")
+	if len(query) <= 0 {
+		log.Println("No search query provided")
+		return
+	}
+
+	// res, err := edlib.FuzzySearchThreshold(query, indexNKeys.keys, 0.5, edlib.Levenshtein)
+	res, err := edlib.FuzzySearchSet(query, indexNKeys.keys, 5, edlib.Levenshtein)
+	if err != nil {
+		log.Panicln("Error implementing fuzzy search: ", err)
+	}
+
+	fmt.Println("Result: ", res)
 }
 
 func Intersection(a, b []int) []int {

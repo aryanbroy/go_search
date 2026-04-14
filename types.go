@@ -6,3 +6,8 @@ type Document struct {
 }
 
 type Index map[string][]int
+
+type IndexWithKeys struct {
+	indexes Index
+	keys    []string
+}

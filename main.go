@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 	"log"
+	"maps"
 	"net/http"
+	"slices"
 )
 
 const addr = ":3000"
@@ -49,11 +51,20 @@ func main() {
 	}
 
 	// log.Println("Indexes: ", invertedIndexes)
+	keyIterator := maps.Keys(invertedIndexes)
+	keys := slices.Collect(keyIterator)
+	// log.Println("Keys only: ", keys)
+
+	indexNKeys := IndexWithKeys{
+		indexes: invertedIndexes,
+		keys:    keys,
+	}
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", Test)
 	mux.HandleFunc("/fetch", CrawlWiki)
-	mux.HandleFunc("/search", invertedIndexes.SearchQuery)
+	mux.HandleFunc("/search", indexNKeys.SearchQuery)
+	mux.HandleFunc("/search_single", indexNKeys.SearchSingle)
 
 	server := http.Server{
 		Addr:    addr,
